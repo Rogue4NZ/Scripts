@@ -32,28 +32,6 @@ sudo apt-get update
 
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Install Pi-hole with Unbound
-echo "Installing Pi-hole and Unbound..."
-sudo apt install -y unbound
-curl -sSL https://install.pi-hole.net | bash
-
-# Configure Unbound for Pi-hole
-echo "Configuring Unbound for Pi-hole..."
-cfg_file="/etc/unbound/unbound.conf.d/pi-hole.conf"
-echo "server:" | sudo tee "$cfg_file"
-echo "    interface: 127.0.0.1" | sudo tee -a "$cfg_file"
-echo "    access-control: 127.0.0.0/8 allow" | sudo tee -a "$cfg_file"
-echo "    do-ip4: yes" | sudo tee -a "$cfg_file"
-echo "    do-ip6: no" | sudo tee -a "$cfg_file"
-echo "    do-udp: yes" | sudo tee -a "$cfg_file"
-echo "    do-tcp: yes" | sudo tee -a "$cfg_file"
-echo "    harden-dnssec-stripped: yes" | sudo tee -a "$cfg_file"
-echo "    use-caps-for-id: no" | sudo tee -a "$cfg_file"
-echo "    edns-buffer-size: 1232" | sudo tee -a "$cfg_file"
-
-echo "Restarting Unbound..."
-sudo systemctl restart unbound
-
 # Prompt to install Portainer or Portainer Agent
 echo "Do you want to install Portainer or Portainer Agent? (portainer/agent/no)"
 read INSTALL_PORTAINER
@@ -68,4 +46,4 @@ else
     echo "Skipping Portainer installation."
 fi
 
-echo "System update, package installation, user setup, Docker, Pi-hole, Unbound, and optional Portainer installation complete!"
+echo "System update, package installation, user setup, Docker, and optional Portainer installation complete!"
